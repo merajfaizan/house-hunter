@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import logo from "/house-64.png";
 import avater from "/avater.png";
+import { useContext } from "react";
+import { AuthContext } from "../../../context/AuthProvider";
 
 const Navbar = () => {
-  const user = false;
+  const { user, logout } = useContext(AuthContext);
 
   const navOptions = (
     <>
@@ -52,7 +54,10 @@ const Navbar = () => {
             </div>
           </div>
 
-          <button className="block md:hidden text-lg font-medium bg-primary text-white px-5 py-2 rounded my-2">
+          <button
+            onClick={logout}
+            className="block md:hidden text-lg font-medium bg-primary text-white px-5 py-2 rounded my-2"
+          >
             Logout
           </button>
         </>
@@ -114,7 +119,10 @@ const Navbar = () => {
             </Link>
           </>
         ) : (
-          <button className="hidden md:block text-lg font-medium bg-primary text-white px-5 py-2 rounded my-2">
+          <button
+            onClick={logout}
+            className="hidden md:block text-lg font-medium bg-primary text-white px-5 py-2 rounded my-2"
+          >
             Logout
           </button>
         )}

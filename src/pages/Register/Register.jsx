@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import useAxiosPublic from "../../hooks/useAxiosPublic";
@@ -11,7 +11,6 @@ const Register = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const [registrationStatus, setRegistrationStatus] = useState(null);
   const axiosPublic = useAxiosPublic();
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
@@ -30,22 +29,17 @@ const Register = () => {
     try {
       // Make a POST request to the registration endpoint
       const response = await axiosPublic.post("/register", user);
-      const email = response.data.email;
-      console.log(email);
-      setRegistrationStatus(response.data.message);
+      const registeredUser = response.data.user;
 
       if (response.status === 201) {
-        setUser(email);
-        localStorage.setItem("user", JSON.stringify(email));
-        axiosPublic.post("/jwt", email).then((res) => {
-          if (res.data.token) {
-            localStorage.setItem("access-token", res.data.token);
-          }
-        });
-        navigate("/login");
+        setUser(registeredUser);
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(registeredUser));
+
+        navigate("/");
         Swal.fire({
           title: "Success!",
-          text: "Registration successful",
+          text: response.data.message,
           icon: "success",
           confirmButtonText: "OKAY",
         });
