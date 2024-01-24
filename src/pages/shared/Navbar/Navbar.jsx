@@ -10,9 +10,16 @@ const Navbar = () => {
       <li>
         <Link to={"/"}>Home</Link>
       </li>
-      <li>
-        <Link to={"/dashboard/House-owner"}>Dashboard</Link>
-      </li>
+      {user?.role === "house-owner" && (
+        <li>
+          <Link to={"/dashboard/house-owner"}>Dashboard</Link>
+        </li>
+      )}
+      {user?.role === "renter" && (
+        <li>
+          <Link to={"/dashboard/renter"}>Dashboard</Link>
+        </li>
+      )}
 
       {!user ? (
         <>
@@ -33,7 +40,11 @@ const Navbar = () => {
         <>
           <div className="flex items-center gap-2">
             <div>
-              <img className="w-12 h-12 rounded-full" src={user?.avatarUrl || avater} alt={user?.name} />
+              <img
+                className="w-12 h-12 rounded-full"
+                src={user?.avatarUrl || avater}
+                alt={user?.name}
+              />
             </div>
             <div>
               <h4>Name: {user?.name}</h4>
